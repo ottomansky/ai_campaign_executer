@@ -29,7 +29,7 @@ def main():
     edited_data = st.data_editor(data, num_rows="dynamic", width=1400, height=500)
 
 
-    if st.button("Send to Keboola"):
+    if st.button("Upload to Keboola"):
         if os.path.exists('updated_data.csv'):
             os.remove('updated_data.csv.gz')
         else:
