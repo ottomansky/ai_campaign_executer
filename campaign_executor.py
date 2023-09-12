@@ -23,7 +23,7 @@ def main():
 
     st.title("APP: Twilio campaing approval")
 
-    data = pd.read_csv('/data/in/table/twilio_sms_campaign_approval_request.csv')
+    data = pd.read_csv('in/tables/twilio_sms_campaign_approval_request.csv')
     # Display the data in an editable table using st.data_editor
     edited_data = st.data_editor(data, num_rows="dynamic", width=1400, height=500)
 
