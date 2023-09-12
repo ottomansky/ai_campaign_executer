@@ -26,7 +26,7 @@ def main():
     data = pd.read_csv(file_path)
     
     # Display the data in an editable table using st.data_editor
-    edited_data = st.data_editor(data, num_rows="dynamic", width=1400, height=500)
+    edited_data = st.data_editor(data, num_rows="dynamic", width=1600, height=500)
 
 
     if st.button("Upload to Keboola"):
