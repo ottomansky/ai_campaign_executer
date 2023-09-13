@@ -59,5 +59,14 @@ def main():
     # Display HTML footer
     st.markdown(html_footer, unsafe_allow_html=True)
 
+    # Hide Made with streamlit from footer
+    hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 if __name__ == '__main__':
     main()
