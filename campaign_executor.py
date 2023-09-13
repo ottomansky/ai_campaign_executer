@@ -22,7 +22,7 @@ client_upload = Client(url, token)
 def main():
 
 
-    st.title("APP: Twilio campaing approval")
+    st.title("Twilio Campaing Approval")
     file_path = "/data/in/tables/twilio_sms_campaign_approval_request.csv"
     data = pd.read_csv(file_path)
     
