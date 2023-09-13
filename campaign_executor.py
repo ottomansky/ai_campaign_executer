@@ -6,7 +6,8 @@ import os
 from streamlit_option_menu import option_menu
 
 
-token = st.secrets["kbc_bucket_token"]
+token = st.secrets["kbc_storage_token"]
+url = st.secrets["kbc_url"]
 
 st.set_page_config(
     
@@ -16,7 +17,7 @@ st.set_page_config(
 
 
 
-client_upload = Client('https://connection.north-europe.azure.keboola.com', token)
+client_upload = Client(url, token)
 
 def main():
 
