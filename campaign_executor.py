@@ -36,7 +36,7 @@ def main():
     # Set up Streamlit container with title and logo
     with st.container():
         st.markdown(f"{logo_html}", unsafe_allow_html=True)
-        st.title("Twilio Campaing Approval")
+        st.title("Twilio Campaign Approval")
     
     file_path = "/data/in/tables/twilio_sms_campaign_approval_request.csv"
     data = pd.read_csv(file_path)
