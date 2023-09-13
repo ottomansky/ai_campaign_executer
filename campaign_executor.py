@@ -53,7 +53,7 @@ def main():
         
         edited_data.to_csv('updated_data.csv.gz', index=False,compression='gzip')
         
-        client_upload.tables.load(table_id = 'out.c-twillio-sms-data-preparation.twilio_sms_campaign_approval_request' , file_path='updated_data.csv.gz', is_incremental=False)
+        client_upload.tables.load(table_id = 'out.c-campaign-executer.twilio_sms_campaign_approval_request' , file_path='updated_data.csv.gz', is_incremental=False)
 
     
     # Display HTML footer
