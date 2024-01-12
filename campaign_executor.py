@@ -7,7 +7,7 @@ from streamlit_option_menu import option_menu
 import base64
 
 #st.set_page_config(layout="wide")
-st.set_page_config(page_title="GenAI Messaging Campaign", page_icon=image_path+"/static/keboola.png", 
+st.set_page_config(page_title="GenAI Messaging Campaign", page_icon=":robot:", 
                    layout="wide"
                    )
 
