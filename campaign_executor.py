@@ -1,4 +1,4 @@
-from kbcstorage.client import Client
+#from kbcstorage.client import Client
 import streamlit as st
 import pandas as pd
 import csv
@@ -7,9 +7,7 @@ from streamlit_option_menu import option_menu
 import base64
 
 #st.set_page_config(layout="wide")
-st.set_page_config(page_title="GenAI Messaging Campaign", page_icon=":robot:", 
-                   layout="wide"
-                   )
+#st.set_page_config(page_title="GenAI Messaging Campaign", page_icon=":robot:", layout="wide")
 
 logo_image = os.path.abspath("./app/static/keboola.png")
 
