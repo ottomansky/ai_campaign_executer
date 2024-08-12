@@ -23,7 +23,7 @@ html_footer = f"""
     </div>
 """
 
-token = st.secrets["kbc_storage_token"]
+token = st.secrets["kbc_token"]
 url = st.secrets["kbc_url"]
 
 client_upload = Client(url, token)
