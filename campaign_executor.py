@@ -28,28 +28,28 @@ st.markdown("""
         /* Title and header */
         h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-top: 10px; }
         
-        /* Center table */
-        .stDataFrameContainer {
-            display: flex;
-            justify-content: center;
+        /* Center table container */
+        div[data-testid='stDataFrameContainer'] > div {
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Buttons */
         button { background-color: #4a90e2; color: white; border-radius: 5px; padding: 10px 20px; border: none; }
         button:hover { background-color: #357ab8; }
         
-        /* Footer styling */
-        footer { 
-            visibility: visible; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 40px; 
-            background-color: #ffffff; 
-            border-top: 1px solid #eaeaea;
+        /* Proper footer positioning */
+        .footer {
             position: fixed;
             bottom: 0;
+            left: 0;
             width: 100%;
+            background-color: white;
+            padding: 10px 40px;
+            border-top: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         footer p { margin: 0; color: #4a4a4a; font-family: 'Segoe UI', sans-serif; }
@@ -95,7 +95,7 @@ def main():
         data['phone_number'] = data['phone_number'].apply(format_phone_number)
 
     # Display the data in an editable table with horizontal scrolling enabled and centered
-    st.markdown("<style>div[data-testid='stDataFrameContainer'] > div { overflow-x: auto; display: flex; justify-content: center; }</style>", unsafe_allow_html=True)
+    st.markdown("<style>div[data-testid='stDataFrameContainer'] > div { overflow-x: auto; }</style>", unsafe_allow_html=True)
     edited_data = st.data_editor(data, num_rows="dynamic", width=1400, height=500)
 
     # Add a button for uploading the edited data
@@ -125,8 +125,8 @@ if __name__ == '__main__':
 
 # Custom footer at the bottom of the page
 st.markdown(f"""
-<footer>
+<div class="footer">
     <p><strong>Version:</strong> 1.1</p>
     <img src="data:image/png;base64,{logo_base64}" style="width: 100px;">
-</footer>
+</div>
 """, unsafe_allow_html=True)
