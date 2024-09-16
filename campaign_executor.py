@@ -1,68 +1,57 @@
-#from kbcstorage.client import Client
 import streamlit as st
 import pandas as pd
-import csv
 import os
-from streamlit_option_menu import option_menu
-import base64
 from kbcstorage.client import Client
 
+# Set Streamlit page config
 st.set_page_config(page_title="GenAI Messaging Campaign", page_icon=":robot:", layout="wide")
 
-logo_image = os.path.abspath("./app/static/keboola.png")
-
-logo_html = f"""<div style="display: flex; justify-content: flex-end;"><img src="data:image/png;base64,{base64.b64encode(open(logo_image, "rb").read()).decode()}" style="width: 100px; margin-left: -10px;"></div>"""
-html_footer = f"""
- <div style="display: flex; justify-content: flex-end;margin-top: 12%">
-        <div>
-            <p><strong>Version:</strong> 1.1</p>
-        </div>
-        <div style="margin-left: auto;">
-            <img src="data:image/png;base64,{base64.b64encode(open(logo_image, "rb").read()).decode()}" style="width: 100px;">
-        </div>
-    </div>
-"""
-
+# Keboola credentials
 token = st.secrets["kbc_token"]
 url = st.secrets["kbc_url"]
-
 client_upload = Client(url, token)
 
+# Main function
 def main():
-
     # Set up Streamlit container with title and logo
     with st.container():
-        st.markdown(f"{logo_html}", unsafe_allow_html=True)
         st.title("Twilio Campaign Approval")
-    
+
     file_path = "/data/in/tables/twilio_sms_campaign_approval_request.csv"
-    data = pd.read_csv(file_path)
+
+    # Read data from CSV
+    if os.path.exists(file_path):
+        data = pd.read_csv(file_path)
+    else:
+        st.error("Oops! Couldn't find the data. 🤔")
+        return
+
+    # Display the data in an editable table with horizontal scrolling enabled
+    st.markdown("<style>div[data-testid='stDataFrameContainer'] > div { overflow-x: auto; }</style>", unsafe_allow_html=True)
     
-    # Display the data in an editable table using st.data_editor
-    edited_data = st.data_editor(data, num_rows="dynamic", width=1400, height=500)
+    edited_data = st.data_editor(data, num_rows="dynamic", width=2000, height=600)  # Increased width to 2000 for more space
 
+    # Add a button for uploading the edited data
+    if st.button("🚀 Upload to Keboola"):
+        with st.spinner('Crafting the perfect AI-generated messages... your SMS campaign is loading 📲🤖'):
+            try:
+                # Remove previous file if it exists
+                if os.path.exists('updated_data.csv.gz'):
+                    os.remove('updated_data.csv.gz')
 
-    if st.button("Upload to Keboola"):
-        if os.path.exists('updated_data.csv'):
-            os.remove('updated_data.csv.gz')
-        else:
-            print("The file does not exist")
-        
-        edited_data.to_csv('updated_data.csv.gz', index=False,compression='gzip')
-        
-        client_upload.tables.load(table_id = 'out.c-campaign-executer.twilio_sms_campaign_approval_request' , file_path='updated_data.csv.gz', is_incremental=False)
+                # Save the edited data to a compressed CSV
+                edited_data.to_csv('updated_data.csv.gz', index=False, compression='gzip')
 
-    
-    # Display HTML footer
-    st.markdown(html_footer, unsafe_allow_html=True)
+                # Upload the file to Keboola
+                client_upload.tables.load(
+                    table_id='out.c-campaign-executer.twilio_sms_campaign_approval_request',
+                    file_path='updated_data.csv.gz',
+                    is_incremental=False
+                )
 
-    # Hide Made with streamlit from footer
-    hide_streamlit_style = """
-            <style>
-            footer {visibility: hidden;}
-            </style>
-            """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+                st.success("Your AI-driven SMS campaign is ready to send! 🚀📲")
+            except Exception as e:
+                st.error(f"Oops! Something went wrong while preparing the campaign: {e} 😬")
 
 if __name__ == '__main__':
     main()
