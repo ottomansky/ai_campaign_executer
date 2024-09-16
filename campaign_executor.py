@@ -23,7 +23,7 @@ st.markdown("""
         /* Background and layout */
         body { background-color: #f8f9fa; }
         .css-1d391kg { max-width: 1200px; margin: auto; }
-        .stApp { background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .stApp { background-color: #f8f9fa; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; }
         
         /* Title and header */
         h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-top: 10px; }
@@ -32,9 +32,14 @@ st.markdown("""
         div[data-testid='stDataFrameContainer'] {
             display: flex;
             justify-content: center;
-            margin-left: auto;
-            margin-right: auto;
-            width: 90%; /* Optional: adjust the width as needed */
+            align-items: center;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        /* Ensure the table takes up the full width of its container */
+        div[data-testid='stDataFrameContainer'] > div {
+            width: 100%;
         }
 
         /* Buttons */
@@ -98,8 +103,9 @@ def main():
         data['phone_number'] = data['phone_number'].apply(format_phone_number)
 
     # Display the data in an editable table with horizontal scrolling enabled and centered
-    st.markdown("<style>div[data-testid='stDataFrameContainer'] > div { overflow-x: auto; }</style>", unsafe_allow_html=True)
+    st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
     edited_data = st.data_editor(data, num_rows="dynamic", width=1400, height=500)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Add a button for uploading the edited data
     if st.button("🚀 Upload to Keboola"):
