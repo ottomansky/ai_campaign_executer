@@ -17,23 +17,32 @@ def load_logo(logo_path):
 logo_image_path = os.path.abspath("./app/static/keboola.png")
 logo_base64 = load_logo(logo_image_path)
 
-# Minimalist CSS for a modern look and centered elements
+# Minimalist CSS for a modern look, centered elements, and vertical centering
 st.markdown("""
     <style>
         /* Background and layout */
         body { background-color: #f8f9fa; }
         .css-1d391kg { max-width: 1200px; margin: auto; }
         .stApp { background-color: #f8f9fa; }
-        
-        /* Title and header */
-        h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-top: 10px; }
-        
-        /* Center table container */
+
+        /* Flexbox to center the entire content block vertically and horizontally */
+        .block-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Center the table */
         div[data-testid='stDataFrameContainer'] > div {
             margin-left: auto;
             margin-right: auto;
         }
 
+        /* Title and header */
+        h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-bottom: 20px; }
+        
         /* Buttons */
         button { background-color: #4a90e2; color: white; border-radius: 5px; padding: 10px 20px; border: none; }
         button:hover { background-color: #357ab8; }
