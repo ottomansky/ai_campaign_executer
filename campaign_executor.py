@@ -11,6 +11,13 @@ token = st.secrets["kbc_token"]
 url = st.secrets["kbc_url"]
 client_upload = Client(url, token)
 
+# Function to format phone numbers
+def format_phone_number(number):
+    if pd.isna(number):  # Check for NaN
+        return number
+    number = str(number)
+    return f"+{number[0]} {number[1:4]} {number[4:7]} {number[7:]}"
+
 # Main function
 def main():
     # Set up Streamlit container with title and logo
@@ -25,6 +32,10 @@ def main():
     else:
         st.error("Oops! Couldn't find the data. 🤔")
         return
+
+    # Assume the phone number column is named 'Phone Number' - adjust as necessary
+    if 'Phone Number' in data.columns:
+        data['Phone Number'] = data['Phone Number'].apply(format_phone_number)
 
     # Display the data in an editable table with horizontal scrolling enabled
     st.markdown("<style>div[data-testid='stDataFrameContainer'] > div { overflow-x: auto; }</style>", unsafe_allow_html=True)
