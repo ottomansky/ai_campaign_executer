@@ -18,10 +18,10 @@ logo_image_path = os.path.abspath("./app/static/keboola.png")
 logo_base64 = load_logo(logo_image_path)
 
 # HTML for logo at the top and bottom
-logo_html = f"""<div style="display: flex; justify-content: flex-end;">
-<img src="data:image/png;base64,{logo_base64}" style="width: 100px; margin-left: -10px;"></div>"""
+logo_html = f"""<div style="display: flex; justify-content: center;">
+<img src="data:image/png;base64,{logo_base64}" style="width: 120px; margin-bottom: 20px;"></div>"""
 html_footer = f"""
- <div style="display: flex; justify-content: flex-end;margin-top: 12%">
+ <div style="display: flex; justify-content: center;margin-top: 30px;">
         <div>
             <p><strong>Version:</strong> 1.1</p>
         </div>
@@ -36,12 +36,35 @@ token = st.secrets["kbc_token"]
 url = st.secrets["kbc_url"]
 client_upload = Client(url, token)
 
-# Function to format phone numbers as plain text without commas
+# Function to format phone numbers as plain text without commas and with better readability
 def format_phone_number(number):
     if pd.isna(number):  # Check for NaN
         return number
     number = str(int(number))  # Convert to int first to remove decimals
-    return f"+{number}"
+    return f"+{number[:1]} {number[1:4]} {number[4:7]} {number[7:]}"  # Adjust the format based on your phone number style
+
+# Minimalist CSS for a modern look
+st.markdown("""
+    <style>
+        /* Background and layout */
+        body { background-color: #f8f9fa; }
+        .css-1d391kg { max-width: 1200px; margin: auto; }
+        .stApp { background-color: #f8f9fa; }
+        
+        /* Title and header */
+        h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-top: 10px; }
+        
+        /* Buttons */
+        button { background-color: #4a90e2; color: white; border-radius: 5px; padding: 10px 20px; border: none; }
+        button:hover { background-color: #357ab8; }
+        
+        /* Editable table styling */
+        .stDataFrame { border-radius: 10px; }
+        
+        /* Footer */
+        footer { visibility: hidden; }
+    </style>
+""", unsafe_allow_html=True)
 
 # Main function
 def main():
@@ -61,8 +84,8 @@ def main():
         return
 
     # Format the phone number column if it exists
-    if 'Phone Number' in data.columns:
-        data['Phone Number'] = data['Phone Number'].apply(format_phone_number)
+    if 'phone_number' in data.columns:
+        data['phone_number'] = data['phone_number'].apply(format_phone_number)
 
     # Display the data in an editable table with horizontal scrolling enabled
     st.markdown("<style>div[data-testid='stDataFrameContainer'] > div { overflow-x: auto; }</style>", unsafe_allow_html=True)
@@ -92,14 +115,6 @@ def main():
 
     # Display HTML footer
     st.markdown(html_footer, unsafe_allow_html=True)
-
-    # Hide Streamlit footer
-    hide_streamlit_style = """
-            <style>
-            footer {visibility: hidden;}
-            </style>
-            """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
