@@ -20,15 +20,10 @@ logo_base64 = load_logo(logo_image_path)
 # Updated CSS to center the table vertically and horizontally
 st.markdown("""
     <style>
-        /* Background and layout */
         body { background-color: #f8f9fa; }
         .css-1d391kg { max-width: 1200px; margin: auto; }
         .stApp { background-color: #f8f9fa; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; }
-        
-        /* Title and header */
         h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-top: 10px; }
-
-        /* Center table */
         div[data-testid='stDataFrameContainer'] {
             display: flex;
             justify-content: center;
@@ -36,17 +31,11 @@ st.markdown("""
             width: 90%;
             margin: 0 auto;
         }
-
-        /* Ensure the table takes up the full width of its container */
         div[data-testid='stDataFrameContainer'] > div {
             width: 100%;
         }
-
-        /* Buttons */
         button { background-color: #4a90e2; color: white; border-radius: 5px; padding: 10px 20px; border: none; }
         button:hover { background-color: #357ab8; }
-
-        /* Footer styling */
         .footer {
             position: fixed;
             bottom: 0;
@@ -59,10 +48,7 @@ st.markdown("""
             justify-content: space-between;
             align-items: center;
         }
-
         footer p { margin: 0; color: #4a4a4a; font-family: 'Segoe UI', sans-serif; }
-        
-        /* Hide default streamlit footer */
         .css-12oz5g7 { visibility: hidden; }
     </style>
 """, unsafe_allow_html=True)
@@ -75,10 +61,14 @@ client_upload = Client(url, token)
 # Function to format phone numbers as plain text with better readability
 def format_phone_number(number):
     try:
-        number = ''.join(filter(str.isdigit, str(number)))  # Remove non-digit characters
-        if len(number) > 0:
-            return f"+{number[:1]} {number[1:4]} {number[4:7]} {number[7:]}"  # Adjust the format based on your phone number style
-        return number
+        # Remove non-digit characters
+        digits = ''.join(filter(str.isdigit, str(number)))
+        if len(digits) == 11 and digits.startswith('1'):  # Assuming it's a US number with a country code
+            return f"+1 {digits[1:4]} {digits[4:7]} {digits[7:]}"
+        elif len(digits) == 10:  # US number without country code
+            return f"{digits[:3]} {digits[3:6]} {digits[6:]}"
+        else:
+            return number  # Return as-is if the format doesn't match expected lengths
     except Exception as e:
         return number  # Return as-is if any error occurs
 
