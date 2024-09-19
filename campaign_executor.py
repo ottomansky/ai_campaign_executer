@@ -25,11 +25,7 @@ st.markdown("""
         .stApp { background-color: #f8f9fa; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; }
         h1 { color: #4a4a4a; font-family: 'Segoe UI', sans-serif; font-weight: bold; text-align: center; margin-top: 10px; }
         div[data-testid='stDataFrameContainer'] {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 90%;
-            margin: 0 auto;
+            display: flex; justify-content: center; align-items: center; width: 90%; margin: 0 auto;
         }
         div[data-testid='stDataFrameContainer'] > div {
             width: 100%;
@@ -37,16 +33,8 @@ st.markdown("""
         button { background-color: #4a90e2; color: white; border-radius: 5px; padding: 10px 20px; border: none; }
         button:hover { background-color: #357ab8; }
         .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            padding: 10px 40px;
-            border-top: 1px solid #eaeaea;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; padding: 10px 40px;
+            border-top: 1px solid #eaeaea; display: flex; justify-content: space-between; align-items: center;
         }
         footer p { margin: 0; color: #4a4a4a; font-family: 'Segoe UI', sans-serif; }
         .css-12oz5g7 { visibility: hidden; }
@@ -60,17 +48,18 @@ client_upload = Client(url, token)
 
 # Function to format phone numbers as plain text with better readability
 def format_phone_number(number):
+    # Ensure the phone number is a string, remove non-digit characters
     try:
-        # Remove non-digit characters
         digits = ''.join(filter(str.isdigit, str(number)))
-        if len(digits) == 11 and digits.startswith('1'):  # Assuming it's a US number with a country code
+        # Apply formatting based on the length of the phone number
+        if len(digits) == 11 and digits.startswith('1'):  # US number with country code
             return f"+1 {digits[1:4]} {digits[4:7]} {digits[7:]}"
         elif len(digits) == 10:  # US number without country code
             return f"{digits[:3]} {digits[3:6]} {digits[6:]}"
         else:
-            return number  # Return as-is if the format doesn't match expected lengths
-    except Exception as e:
-        return number  # Return as-is if any error occurs
+            return number  # Return the original if the number doesn't match expected lengths
+    except Exception:
+        return number  # In case of any exception, return the number as-is
 
 # Main function
 def main():
